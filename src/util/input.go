@@ -3,31 +3,42 @@ package util
 import (
 	"flag"
 	"fmt"
+	"os"
 )
 
 var Input = struct {
-	threads string
-	dtime   string
+	Thread string
+	Connections string
+	Header string
+	Usl string
+	Dtime string
 }{}
 
-var HelpInfo = `
-	-s threads
-	-d delay time
-	./mySender -s 1 -d 1
-`
+const (
+	HelpInfo = `
+ helpInfo
+	-t Threads
+	-c Connections
+	-H Header
+	-usl Usl
+	-d DelayTime
+	for example
+	  ./mySender -usl www.baidu.com  -t 10 -c 10 -d 10
+	`
+)
 
 func init() {
-	fmt.Println("init")
+	help := false
+	flag.BoolVar(&help, "help", false, "help Info")
+	flag.StringVar(&Input.Thread, "t", "", "thread")
+	flag.StringVar(&Input.Connections, "c", "", "Connections")
+	flag.StringVar(&Input.Header, "H", "", "Header")
+	flag.StringVar(&Input.Usl, "usl", "", "Usl")
+	flag.StringVar(&Input.Dtime, "d", "", "DelayTime")
 	flag.Parse()
-	// for test flag args
-	args := flag.Args()
-	// for test range
-	for _, s := range args {
-		fmt.Println(s)
+
+	if help || Input.Usl == ""{
+		fmt.Println(HelpInfo)
+		os.Exit(0)
 	}
-	if len(args) == 2 {
-		Input.threads = args[0]
-		Input.dtime = args[1]
-	}
-	fmt.Println(Input)
 }
